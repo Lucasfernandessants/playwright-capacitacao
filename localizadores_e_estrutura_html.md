@@ -58,7 +58,7 @@ O ID é um atributo único que deve identificar apenas um elemento na página. �
 ```
 
 Para selecionar este elemento:
-```
+```js
 await page.locator("#botao-enviar").click();
 ```
 
@@ -72,7 +72,7 @@ O atributo name é comumente usado em elementos de formulário.
 
 Para selecionar este elemento:
 
-```
+```js
 await page.locator('[name="usuario-email"]').fill("teste@exemplo.com");
 ```
 
@@ -87,7 +87,7 @@ Classes podem estar presentes em múltiplos elementos, então este seletor pode 
 
 Para selecionar:
 
-```
+```js
 // Retorna o primeiro elemento com a classe "produto-card"
 await page.locator(".produto-card").first().click();
 
@@ -108,7 +108,7 @@ Os seletores CSS são os mais usados e permitem grande flexibilidade.
 ```
 
 Exemplos:
-```
+```js
 await page.locator("#id-container");              // Seleciona por ID
 await page.locator(".item");                      // Seleciona por classe
 await page.locator(".item.destaque");             // Seleciona múltiplas classes
@@ -130,7 +130,7 @@ O Playwright também suporta seletores XPath, embora seja recomendado priorizar 
 ```
 
 Exemplos:
-```
+```js
 await page.locator('//h2');
 await page.locator('//div[@class="container"]');
 await page.locator('//section/article/h2');
