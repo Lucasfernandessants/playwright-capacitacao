@@ -1,109 +1,84 @@
-# Sintaxe básica do Playwright com JavaScript
+# Sintaxe Básica do Playwright com JavaScript
 
-Sintaxe básica do Playwright com JavaScript
+Para usar o Playwright, a sintaxe segue geralmente o padrão page.comando(), onde page representa a página do navegador que está sendo controlada.
+Os exemplos a seguir usam uma abordagem assíncrona, que é a forma mais moderna de se trabalhar com a biblioteca.
 
-Para usar o Playwright, a sintaxe segue geralmente o padrão page.comando(), onde page representa a página do navegador que está sendo controlada. Os exemplos a seguir usam uma abordagem assíncrona, que é a forma mais moderna de se trabalhar com a biblioteca.
+## Navegação
 
-Exemplo de sintaxe básica: 
+### Navega para a URL especificada.
 
-Navegação
+```js
+await page.goto("https://google.com");
+```
 
-page.goto(url)
+### Recarrega a página atual.
+```js
+await page.reload();
+```
 
-Este comando navega para a URL especificada.
+## Interação com Elementos
 
-await page.goto("https://google.com")
+O Playwright usa seletores CSS ou XPath para encontrar elementos.
+A sintaxe page.locator() é a recomendada, pois espera que o elemento apareça antes de executar uma ação.
 
-page.reload()
+### Clicar em um elemento:
+```js
+await page.locator("button[type='submit']").click();
+```
 
-Recarrega a página atual.
+### Preencher um campo de texto:
+```js
+await page.locator("#username").fill("meu_usuario");
+await page.locator("#senha").fill("minha_senha");
+```
 
-await page.reload()
+### Passar o mouse sobre um elemento:
+```js
+await page.locator(".menu-opcao").hover();
+```
+## Verificação e Asserções
 
-
+O Playwright permite realizar asserções para garantir que o estado da página está como esperado.
 
-Interação com Elementos
+### Verificar se um elemento está visível:
 
-O Playwright usa seletores CSS ou XPath para encontrar elementos. A sintaxe page.locator() é a maneira recomendada para interagir com elementos, pois ela é inteligente o suficiente para esperar que o elemento apareça antes de executar uma ação.
+```js
+await expect(page.locator("input[name='email']")).to_be_visible();
+```
 
-page.locator(selector).click()
+### Confirmar que um elemento contém texto específico:
 
-Clica em um elemento na página, como um botão ou link.
+```js
+await expect(page.locator(".mensagem")).to_contain_text("Login realizado com sucesso!");
+```
 
-await page.locator("button[type='submit']").click()
+## Extração de Dados
 
-page.locator(selector).fill(text)
+### Obter o texto de um elemento:
+```js
+const nome_produto = await page.locator(".produto-nome").inner_text();
+console.log(`Produto encontrado: ${nome_produto}`);
+```
 
-Preenche um campo de texto com a string fornecida.
+## Esperas (Waits)
 
-await page.locator("#username").fill("meu_usuario")
+O Playwright lida com a maioria das esperas automaticamente, mas em cenários complexos, você pode precisar de comandos específicos.
 
-await page.locator("#senha").fill("minha_senha")
+### Esperar até que um elemento esteja visível:
+```js
+await page.wait_for_selector(".loader-fim");
+```
 
-page.locator(selector).hover()
+### Esperar até que a URL mude para a esperada:
+```js
+await page.wait_for_url("https://exemplo.com/dashboard");
+```
 
-Simula o mouse passando sobre um elemento.
+## Captura de Tela
 
-await page.locator(".menu-opcao").hover()
+### Salvar uma captura de tela da página:
+```js
+await page.screenshot({ path: "tela_login.png" });
+```
 
-
-
-Verificação e Asserções
-
-O Playwright permite que você faça asserções (verificações) para garantir que o estado da página está como o esperado. 
-
-expect(page.locator(selector)).to_be_visible()
-
-Verifica se um elemento está visível na página.
-
-await expect(page.locator("input[name='email']")).to_be_visible()
-
-expect(page.locator(selector)).to_contain_text(text)
-
-Confirma que um elemento contém o texto especificado.
-
-await expect(page.locator(".mensagem")).to_contain_text("Login realizado com sucesso!")
-
-
-
-Extração de Dados
-
-page.locator(selector).inner_text()
-
-Extrai e retorna o texto visível de um elemento.
-
-nome_produto = await page.locator(".produto-nome").inner_text()
-
-print(f"Produto encontrado: {nome_produto}")
-
-
-
-Esperas (Waits)
-
-O Playwright lida com a maioria das esperas automaticamente, mas em cenários mais complexos, você pode precisar de comandos específicos.
-
-page.wait_for_selector(selector, state='visible')
-
-Espera até que um elemento com o seletor seja visível.
-
-await page.wait_for_selector(".loader-fim")
-
-page.wait_for_url(url)
-
-Espera a URL da página mudar para a URL esperada.
-
-await page.wait_for_url("https://exemplo.com/dashboard")
-
-
-
-Captura de Tela
-
-page.screenshot(path='nome_arquivo.png')
-
-Salva uma captura de tela da página.
-
-await page.screenshot(path="tela_login.png")
-
-
-
-Lembre-se de que os seletores (#, ., []) são baseados na estrutura HTML do site que você está testando. Eles precisam ser adaptados para cada projeto.
+> Lembre-se: os seletores (#, ., []) são baseados na estrutura HTML do site que você está testando. Eles precisam ser adaptados para cada projeto.
